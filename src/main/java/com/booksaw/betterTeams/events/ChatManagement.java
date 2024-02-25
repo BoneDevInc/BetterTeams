@@ -25,17 +25,6 @@ public class ChatManagement implements Listener {
 		doPrefix = PrefixType.getType(Main.plugin.getConfig().getString("prefix"));
 	}
 
-	/**
-	 * This detects when the player speaks and either adds a prefix or puts the
-	 * message in the team chat
-	 *
-	 * @param event the chat event
-	 */
-	@EventHandler(priority = EventPriority.HIGH)
-	public void onChat(AsyncPlayerChatEvent event) {
-		return;
-	}
-
 	@EventHandler
 	public void spyQuit(PlayerQuitEvent e) {
 		spy.remove(e.getPlayer());
