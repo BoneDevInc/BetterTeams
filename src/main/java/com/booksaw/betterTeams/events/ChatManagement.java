@@ -33,68 +33,7 @@ public class ChatManagement implements Listener {
 	 */
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onChat(AsyncPlayerChatEvent event) {
-
-		if (event.isCancelled()) {
-			return;
-		}
-
-		Player p = event.getPlayer();
-		Team team = Team.getTeam(p);
-
-		if (team == null) {
-			return;
-		}
-
-		TeamPlayer teamPlayer = team.getTeamPlayer(p);
-
-		if(teamPlayer == null) {
-			throw new IllegalStateException("Player " + p.getName() + " is registered to be in a team, yet has no playerdata associated with that team");
-		}
-
-		String anyChatToGlobalPrefix = Main.plugin.getConfig().getString("chatPrefixes.teamOrAllyToGlobal", "!");
-		String globalToTeamPrefix = Main.plugin.getConfig().getString("chatPrefixes.globalToTeam", "!");
-		String globalToAllyPrefix = Main.plugin.getConfig().getString("chatPrefixes.globalToAlly", "?");
-
-		if (teamPlayer.isInTeamChat() || teamPlayer.isInAllyChat()) {
-			if (!anyChatToGlobalPrefix.isEmpty() && event.getMessage().startsWith(anyChatToGlobalPrefix) && event.getMessage().length() > anyChatToGlobalPrefix.length()) {
-				event.setMessage(event.getMessage().substring(anyChatToGlobalPrefix.length()));
-			} else {
-				// Player is not sending to global chat
-				event.setCancelled(true);
-
-				if (teamPlayer.isInTeamChat()) {
-					team.sendMessage(teamPlayer, event.getMessage());
-				} else {
-					team.sendAllyMessage(teamPlayer, event.getMessage());
-				}
-				// Used as some chat plugins do not accept when a message is cancelled
-				event.setMessage("");
-				event.setFormat("");
-				return;
-			}
-		} else if (
-				(!globalToTeamPrefix.isEmpty() && event.getMessage().startsWith(globalToTeamPrefix) && event.getMessage().length() > globalToTeamPrefix.length())
-				|| (!globalToAllyPrefix.isEmpty() && event.getMessage().startsWith(globalToAllyPrefix) && event.getMessage().length() > globalToAllyPrefix.length())
-		) {
-			// Player is not sending to global chat
-			event.setCancelled(true);
-
-			if (event.getMessage().startsWith(globalToTeamPrefix)) {
-				team.sendMessage(teamPlayer, event.getMessage().substring(globalToTeamPrefix.length()));
-			} else {
-				team.sendAllyMessage(teamPlayer, event.getMessage().substring(globalToAllyPrefix.length()));
-			}
-			// Used as some chat plugins do not accept when a message is cancelled
-			event.setMessage("");
-			event.setFormat("");
-			return;
-		}
-
-		if (doPrefix != PrefixType.NONE) {
-			event.setFormat(doPrefix.getUpdatedFormat(p, event.getFormat(), team));
-//				event.setFormat(ChatColor.AQUA + "[" + team.getName() + "] " + ChatColor.WHITE + event.getFormat());
-		}
-
+		return;
 	}
 
 	@EventHandler
